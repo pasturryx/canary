@@ -9129,7 +9129,7 @@ void ProtocolGame::sendCastViewerAppear(std::shared_ptr<Player> foundPlayer) {
 	acceptPackets = true;
 
 	if (player->client->isCastBroadcasting()) {
-                std::string welcomeMessage = fmt::format("{} is boradcasting for {} people.\nLivestream time: {}", player->getName(), player->client->getViewers().size(), player->client->getCastBroadcastTimeString());
+		std::string welcomeMessage = fmt::format("{} is boradcasting for {} people.\nLivestream time: {}", player->getName(), player->client->getViewers().size(), player->client->getCastBroadcastTimeString());
 		sendTextMessage(TextMessage(MESSAGE_LOOK, welcomeMessage));
 
 		const std::string &description = player->client->getCastDescription();
