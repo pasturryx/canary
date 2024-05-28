@@ -141,20 +141,12 @@ void CastViewer::setCastBroadcast(bool value) {
 }
 
 std::string CastViewer::getCastBroadcastTimeString() const {
-	std::stringstream broadcast_message;
 	int64_t seconds = getCastBroadcastTime() / 1000;
 	uint16_t hour = floor(seconds / 60 / 60 % 24);
 	uint16_t minute = floor(seconds / 60 % 60);
 	uint16_t second = floor(seconds % 60);
 
-	if (hour > 0) {
-		broadcast_message << hour << " hours, ";
-	}
-	if (minute > 0) {
-		broadcast_message << minute << " minutes and ";
-	}
-	broadcast_message << second << " seconds.";
-	return broadcast_message.str();
+	return fmt::format("{} hours, {} minutes and {} seconds", hour, minute, second);
 }
 
 int64_t CastViewer::getCastBroadcastTime() const {
@@ -1411,18 +1403,17 @@ void CastViewer::addViewer(ProtocolGame_ptr client, bool spy) {
 		return;
 	}
 
-	std::stringstream message;
 	auto viewerId = m_viewers.size() + 1;
-	message << "Guest-" << viewerId;
+	std::string guestString = fmt::format("Guest-{}", viewerId);
 
-	m_viewers[client] = std::make_pair(message.str(), m_id);
+	m_viewers[client] = std::make_pair(guestString, m_id);
 
 	if (!spy) {
-		sendChannelMessage("", message.str() + " has entered the cast.", TALKTYPE_CHANNEL_O, CHANNEL_CAST);
+		sendChannelMessage("", fmt::format("{} has entered the cast.", guestString), TALKTYPE_CHANNEL_O, CHANNEL_CAST);
 
 		if (m_viewers.size() > m_castLiveRecord) {
 			m_castLiveRecord = m_viewers.size();
-			sendChannelMessage("", "New record: " + std::to_string(m_castLiveRecord) + " people are watching your livestream now.", TALKTYPE_CHANNEL_O, CHANNEL_CAST);
+			sendChannelMessage("", fmt::format("New record: {} people are watching your livestream now.", std::to_string(m_castLiveRecord), TALKTYPE_CHANNEL_O, CHANNEL_CAST);
 		}
 	}
 }
@@ -1439,7 +1430,7 @@ void CastViewer::removeViewer(ProtocolGame_ptr client, bool spy) {
 	}
 
 	if (!spy) {
-		sendChannelMessage("", it->second.first + " has left the cast.", TALKTYPE_CHANNEL_O, CHANNEL_CAST);
+		sendChannelMessage("", fmt::format("{} has left the cast.", it->second.first), TALKTYPE_CHANNEL_O, CHANNEL_CAST);
 	}
 
 	m_viewers.erase(it);
@@ -1459,9 +1450,8 @@ void CastViewer::handle(ProtocolGame_ptr client, const std::string &text, uint16
 	if (client->m_castCooldownTime + 5000 < now) {
 		client->m_castCooldownTime = now, client->m_castCount = 0;
 	} else if (client->m_castCount++ >= 3) {
-		std::stringstream messageViewer;
-		messageViewer << "Please wait a " << ((client->m_castCooldownTime + 5000 - now) / 1000) + 1 << " seconds to send another message.";
-		client->sendTextMessage(TextMessage(MESSAGE_STATUS, messageViewer.str()));
+		std::string messageViewer = fmt::format("Please wait a {} seconds to send another message.", ((client->m_castCooldownTime + 5000 - now) / 1000) + 1;
+		client->sendTextMessage(TextMessage(MESSAGE_STATUS, messageViewer));
 		return;
 	}
 
@@ -1469,18 +1459,12 @@ void CastViewer::handle(ProtocolGame_ptr client, const std::string &text, uint16
 	if (text[0] == '/') {
 		std::vector<std::string> CommandParam = explodeString(text.substr(1, text.length()), " ", 1);
 		if (strcasecmp(CommandParam[0].c_str(), "show") == 0) {
-			std::stringstream messageViewer;
-			messageViewer << m_viewers.size() << " spectator" << (m_viewers.size() > 1 ? "s" : "") << ". ";
-			for (auto it = m_viewers.begin(); it != m_viewers.end(); ++it) {
-				if (it != m_viewers.begin()) {
-					messageViewer << " ,";
-				}
+			auto viewersNames = std::views::transform(m_viewers, [](const auto &pair) {
+				return pair.second.first;
+			});
+			std::string messageViewer = fmt::format("{} spectator{}, {}.", m_viewers.size(), m_viewers.size() > 1 ? "s" : "", fmt::join(viewersNames.begin(), viewersNames.end(), ", "));
 
-				messageViewer << it->second.first;
-			}
-
-			messageViewer << ".";
-			client->sendTextMessage(TextMessage(MESSAGE_STATUS, messageViewer.str()));
+			client->sendTextMessage(TextMessage(MESSAGE_STATUS, messageViewer));
 		} else if (strcasecmp(CommandParam[0].c_str(), "name") == 0) {
 			if (CommandParam.size() > 1) {
 				if (CommandParam[1].length() > 2) {
@@ -1497,7 +1481,7 @@ void CastViewer::handle(ProtocolGame_ptr client, const std::string &text, uint16
 
 						if (!found) {
 							if (isCastChannel) {
-								sendChannelMessage("", sit->second.first + " was renamed for " + CommandParam[1] + ".", TALKTYPE_CHANNEL_O, CHANNEL_CAST);
+								sendChannelMessage("", fmt::format("{} was renamed to {}.", sit->second.first, CommandParam[1]), TALKTYPE_CHANNEL_O, CHANNEL_CAST);
 							}
 
 							auto mit = std::find(m_mutes.begin(), m_mutes.end(), asLowerCaseString(sit->second.first));
