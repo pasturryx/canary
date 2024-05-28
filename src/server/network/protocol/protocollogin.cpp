@@ -199,7 +199,7 @@ void ProtocolLogin::getCastViewersList(const std::string &password) {
 
 	// Add session key
 	output->addByte(0x28);
-	output->addString("@cast\n" + password, "ProtocolLogin::getCharacterList - accountDescriptor + password");
+	output->addString(fmt::format("@cast\n{}", password), "ProtocolLogin::getCharacterList - accountDescriptor + password");
 
 	output->addByte(0x64);
 
@@ -229,7 +229,7 @@ void ProtocolLogin::getCastViewersList(const std::string &password) {
 
 	for (const auto &player : players) {
 		output->addByte(0);
-		output->addString(player->getName(), "ProtocolLogin::getCastViewersList - ss.str()");
+		output->addString(player->getName(), "ProtocolLogin::getCastViewersList - player->getName()");
 	}
 
 	// Add premium days
