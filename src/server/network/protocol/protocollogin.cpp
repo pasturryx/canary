@@ -195,9 +195,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage &msg) {
 void ProtocolLogin::getCastViewersList(const std::string &password) {
 	auto output = OutputMessagePool::getOutputMessage();
 	output->addByte(0x14);
-	std::ostringstream ss;
-	ss << normal_random(1, 100) << "\nWelcome to Cast System!";
-	output->addString(ss.str(), "ProtocolLogin::getCastViewersList - ss.str()");
+	output->addString(fmt::format("{}\nWelcome to Cast System!", normal_random(1, 100)), "ProtocolLogin::getCastViewersList - fmt::format('{}\nWelcome to Cast System!', normal_random(1, 100))");
 
 	// Add session key
 	output->addByte(0x28);
