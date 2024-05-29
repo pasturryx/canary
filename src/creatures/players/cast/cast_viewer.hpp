@@ -86,7 +86,7 @@ public:
 	void sendUpdateTileItem(const Position &pos, uint32_t stackpos, std::shared_ptr<Item> item);
 	void sendRemoveTileThing(const Position &pos, int32_t stackpos);
 	void sendUpdateTile(std::shared_ptr<Tile> tile, const Position &pos);
-	void sendChannelMessage(const std::string &author, const std::string &text, SpeakClasses type, uint16_t channel);
+	void sendChannelMessage(const std::string &author, const std::string &message, SpeakClasses type, uint16_t channel);
 	void sendMoveCreature(std::shared_ptr<Creature> creature, const Position &newPos, int32_t newStackPos, const Position &oldPos, int32_t oldStackPos, bool teleport);
 	void sendCreatureTurn(std::shared_ptr<Creature> creature, int32_t stackpos);
 	void sendForgeResult(ForgeAction_t actionType, uint16_t leftItemId, uint8_t leftTier, uint16_t rightItemId, uint8_t rightTier, bool success, uint8_t bonus, uint8_t coreCount, bool convergence) const;

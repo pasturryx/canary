@@ -364,12 +364,12 @@ void CastViewer::sendUpdateTile(std::shared_ptr<Tile> tile, const Position &pos)
 	}
 }
 
-void CastViewer::sendChannelMessage(const std::string &author, const std::string &text, SpeakClasses type, uint16_t channel) {
+void CastViewer::sendChannelMessage(const std::string &author, const std::string &message, SpeakClasses type, uint16_t channel) {
 	if (m_owner) {
-		m_owner->sendChannelMessage(author, text, type, channel);
+		m_owner->sendChannelMessage(author, message, type, channel);
 
 		for (const auto &it : m_viewers) {
-			it.first->sendChannelMessage(author, text, type, channel);
+			it.first->sendChannelMessage(author, message, type, channel);
 		}
 	}
 }
@@ -1413,7 +1413,7 @@ void CastViewer::addViewer(ProtocolGame_ptr client, bool spy) {
 
 		if (m_viewers.size() > m_castLiveRecord) {
 			m_castLiveRecord = m_viewers.size();
-			sendChannelMessage("", fmt::format("New record: {} people are watching your livestream now.", std::to_string(m_castLiveRecord), TALKTYPE_CHANNEL_O, CHANNEL_CAST);
+			sendChannelMessage("", fmt::format("New record: {} people are watching your livestream now.", std::to_string(m_castLiveRecord)), TALKTYPE_CHANNEL_O, CHANNEL_CAST);
 		}
 	}
 }
@@ -1450,8 +1450,7 @@ void CastViewer::handle(ProtocolGame_ptr client, const std::string &text, uint16
 	if (client->m_castCooldownTime + 5000 < now) {
 		client->m_castCooldownTime = now, client->m_castCount = 0;
 	} else if (client->m_castCount++ >= 3) {
-		std::string messageViewer = fmt::format("Please wait a {} seconds to send another message.", ((client->m_castCooldownTime + 5000 - now) / 1000) + 1;
-		client->sendTextMessage(TextMessage(MESSAGE_STATUS, messageViewer));
+		client->sendTextMessage(TextMessage(MESSAGE_STATUS, fmt::format("Please wait a {} seconds to send another message.", ((client->m_castCooldownTime + 5000 - now) / 1000) + 1)));
 		return;
 	}
 
