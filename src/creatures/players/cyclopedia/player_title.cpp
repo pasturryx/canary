@@ -84,23 +84,23 @@ const std::vector<std::pair<Title, uint32_t>> &PlayerTitle::getUnlockedTitles() 
 }
 
 uint8_t PlayerTitle::getCurrentTitle() const {
-    auto scopedTitles = m_player.kv()->scoped("titles")->get("current-title");
+	auto scopedTitles = m_player.kv()->scoped("titles")->get("current-title");
 
-    if (!scopedTitles || !scopedTitles.has_value()) {
-        return 0;
-    }
+	if (!scopedTitles || !scopedTitles.has_value()) {
+		return 0;
+	}
 
-    return static_cast<uint8_t>(scopedTitles->getNumber());
+	return static_cast<uint8_t>(scopedTitles->getNumber());
 }
 
 void PlayerTitle::setCurrentTitle(uint8_t id) {
-    auto scopedTitles = m_player.kv()->scoped("titles");
+	auto scopedTitles = m_player.kv()->scoped("titles");
 
-    if (!scopedTitles) {
-        return;
-    }
+	if (!scopedTitles) {
+		return;
+	}
 
-    scopedTitles->set("current-title", id != 0 && isTitleUnlocked(id) ? id : 0);
+	scopedTitles->set("current-title", id != 0 && isTitleUnlocked(id) ? id : 0);
 }
 
 std::string PlayerTitle::getCurrentTitleName() {
@@ -269,9 +269,9 @@ bool PlayerTitle::checkBestiary(const std::string &name, uint16_t race, bool isB
 bool PlayerTitle::checkLoginStreak(uint32_t amount) {
 	auto streakKV = m_player.kv()->scoped("daily-reward")->get("streak");
 
-    if (!streakKV || !streakKV.has_value()) {
-        return false;
-    }
+	if (!streakKV || !streakKV.has_value()) {
+		return false;
+	}
 
 	return streakKV && streakKV.has_value() && static_cast<uint8_t>(streakKV->getNumber()) >= amount;
 }

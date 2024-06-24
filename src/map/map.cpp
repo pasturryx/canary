@@ -734,8 +734,7 @@ uint32_t Map::clean() {
 
 		if (const auto &items = tile->getItemList()) {
 			++qntTiles;
-			std::copy_if(items->begin(), items->end(), std::back_inserter(toRemove),
-						 [](const auto& item) { return item->isCleanable(); });
+			std::copy_if(items->begin(), items->end(), std::back_inserter(toRemove), [](const auto &item) { return item->isCleanable(); });
 		}
 	}
 

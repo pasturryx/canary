@@ -3665,7 +3665,7 @@ void ProtocolGame::sendCyclopediaCharacterRecentDeaths(uint16_t page, uint16_t p
 	msg.add<uint16_t>(page);
 	msg.add<uint16_t>(pages);
 	msg.add<uint16_t>(entries.size());
-    for (const RecentDeathEntry &entries : entries) {
+	for (const RecentDeathEntry &entries : entries) {
 		msg.add<uint32_t>(entries.timestamp);
 		msg.addString(entries.cause, "ProtocolGame::sendCyclopediaCharacterRecentDeaths - entry.cause");
 	}

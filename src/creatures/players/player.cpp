@@ -5793,7 +5793,6 @@ uint8_t Player::getLastMount() const {
 	return 0;
 }
 
-
 uint8_t Player::getCurrentMount() const {
 	int32_t value = getStorageValue(PSTRG_MOUNTS_CURRENTMOUNT);
 	if (value > 0) {
