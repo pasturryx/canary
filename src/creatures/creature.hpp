@@ -17,6 +17,7 @@
 #include "game/movement/position.hpp"
 #include "items/tile.hpp"
 
+#define STORAGEVALUE_LOOT 12345
 using ConditionList = std::list<std::shared_ptr<Condition>>;
 using CreatureEventList = std::list<std::shared_ptr<CreatureEvent>>;
 

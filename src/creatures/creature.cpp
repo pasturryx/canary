@@ -805,13 +805,18 @@ bool Creature::dropCorpse(std::shared_ptr<Creature> lastHitCreature, std::shared
 				auto monster = getMonster();
 				if (monster && !monster->isRewardBoss()) {
 					std::ostringstream lootMessage;
-					auto collorMessage = player->getProtocolVersion() > 1200 && player->getOperatingSystem() < CLIENTOS_OTCLIENT_LINUX;
-					lootMessage << "Loot of " << getNameDescription() << ": " << corpseContainer->getContentDescription(collorMessage) << ".";
+					auto colorMessage = player->getProtocolVersion() > 1200 && player->getOperatingSystem() < CLIENTOS_OTCLIENT_LINUX;
+					lootMessage << "Loot of " << getNameDescription() << ": " << corpseContainer->getContentDescription(colorMessage) << ".";
 					auto suffix = corpseContainer->getAttribute<std::string>(ItemAttribute_t::LOOTMESSAGE_SUFFIX);
 					if (!suffix.empty()) {
 						lootMessage << suffix;
 					}
-					player->sendLootMessage(lootMessage.str());
+
+					if (player->getStorageValue(STORAGEVALUE_LOOT) == 12345) {
+						player->sendChannelMessage("", lootMessage.str(), TALKTYPE_CHANNEL_O, 13);
+					} else {
+						player->sendLootMessage(lootMessage.str());
+					}
 				}
 
 				stdext::arraylist<Direction> dirList(128);
