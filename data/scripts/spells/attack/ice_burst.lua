@@ -55,7 +55,7 @@ spell:name("Ice Burst")
 spell:words("exevo ulus frigo")
 spell:level(300)
 spell:mana(230)
-spell:isPremium(true)
+spell:isPremium(false)
 spell:cooldown(1000) -- Cooldown is calculated on the casting
 spell:groupCooldown(2 * 1000)
 spell:needLearn(true)
