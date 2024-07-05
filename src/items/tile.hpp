@@ -169,6 +169,12 @@ public:
 	bool hasProperty(ItemProperty prop) const;
 	bool hasProperty(std::shared_ptr<Item> exclude, ItemProperty prop) const;
 
+	uint32_t getHeight() const {
+		return height;
+	}
+	bool hasHeight(uint32_t n) const {
+		return height == n;
+	}
 	bool hasFlag(uint32_t flag) const {
 		return hasBitSet(flag, this->flags);
 	}
@@ -198,7 +204,7 @@ public:
 		return ZONE_NORMAL;
 	}
 
-	bool hasHeight(uint32_t n) const;
+	//bool hasHeight(uint32_t n) const;
 
 	std::string getDescription(int32_t lookDistance) override final;
 
@@ -276,6 +282,7 @@ protected:
 	std::shared_ptr<Item> ground = nullptr;
 	Position tilePos;
 	uint32_t flags = 0;
+	uint32_t height = 0;
 	std::unordered_set<std::shared_ptr<Zone>> zones;
 };
 

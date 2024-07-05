@@ -82,7 +82,7 @@ bool ConfigManager::load() {
 		loadStringConfig(L, MYSQL_SOCK, "mysqlSock", "");
 		loadStringConfig(L, MYSQL_USER, "mysqlUser", "root");
 	}
-
+	
 	loadBoolConfig(L, AIMBOT_HOTKEY_ENABLED, "hotkeyAimbotEnabled", true);
 	loadBoolConfig(L, ALLOW_BLOCK_SPAWN, "allowBlockSpawn", true);
 	loadBoolConfig(L, ALLOW_CHANGEOUTFIT, "allowChangeOutfit", true);
@@ -91,6 +91,8 @@ bool ConfigManager::load() {
 	loadBoolConfig(L, AUTOLOOT, "autoLoot", false);
 	loadBoolConfig(L, BOOSTED_BOSS_SLOT, "boostedBossSlot", true);
 	loadBoolConfig(L, CLASSIC_ATTACK_SPEED, "classicAttackSpeed", false);
+	loadBoolConfig(L, HEIGHT_BLOCK, "heightBlock", false);
+	loadBoolConfig(L, STOLE_LOOT, "stoleLoot", true);
 	loadBoolConfig(L, CLEAN_PROTECTION_ZONES, "cleanProtectionZones", false);
 	loadBoolConfig(L, CONVERT_UNSAFE_SCRIPTS, "convertUnsafeScripts", true);
 	loadBoolConfig(L, DISABLE_MONSTER_ARMOR, "disableMonsterArmor", false);

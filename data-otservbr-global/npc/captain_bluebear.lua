@@ -55,6 +55,48 @@ end
 npcType.onCloseChannel = function(npc, creature)
 	npcHandler:onCloseChannel(npc, creature)
 end
+local function addInstantTravel(keywordHandler, destination, cost, position)
+    local keywords = {"bring me to " .. destination:lower()}
+    keywordHandler:addKeyword(keywords, function(player, message, keywords, parameters, node)
+        if player:getBalance() < cost then
+            npcHandler:say("I'm sorry, but you don't have enough money to pay for the trip.", npc, player)
+            return true
+        end
+        player:removeMoneyBank(cost)
+        player:teleportTo(position)
+        player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
+        npcHandler:say("Have a nice trip!", npc, player)
+        return true
+    end, {npcHandler = npcHandler})
+end
+
+-- Add instant travel options
+addInstantTravel(keywordHandler, "Ab'Dendriel", 130, Position(32734, 31668, 6))
+addInstantTravel(keywordHandler, "Edron", 160, Position(33175, 31764, 6))
+addInstantTravel(keywordHandler, "Venore", 170, Position(32954, 32022, 6))
+addInstantTravel(keywordHandler, "Port Hope", 160, Position(32527, 32784, 6))
+addInstantTravel(keywordHandler, "Roshamuul", 210, Position(33494, 32567, 7))
+addInstantTravel(keywordHandler, "Svargrond", 180, Position(32341, 31108, 6))
+addInstantTravel(keywordHandler, "Liberty Bay", 180, Position(32285, 32892, 6))
+addInstantTravel(keywordHandler, "Oramond", 150, Position(33479, 31985, 7))
+addInstantTravel(keywordHandler, "Krailos", 230, Position(33492, 31712, 6))
+
+-- Special case for Yalahar with condition
+keywordHandler:addKeyword({"bring me to yalahar"}, function(player, message, keywords, parameters, node)
+    if player:getStorageValue(Storage.SearoutesAroundYalahar.Thais) == 1 or player:getStorageValue(Storage.SearoutesAroundYalahar.TownsCounter) >= 5 then
+        npcHandler:say("I'm sorry, but I can't take you to Yalahar at the moment.", npc, player)
+        return true
+    end
+    if player:getBalance() < 200 then
+        npcHandler:say("I'm sorry, but you don't have enough money to pay for the trip.", npc, player)
+        return true
+    end
+    player:removeMoneyBank(200)
+    player:teleportTo(Position(32816, 31272, 6))
+    player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
+    npcHandler:say("Have a nice trip!", npc, player)
+    return true
+end, {npcHandler = npcHandler})
 
 -- Travel
 local function addTravelKeyword(keyword, cost, destination, action, condition)
