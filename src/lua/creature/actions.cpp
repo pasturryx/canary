@@ -355,14 +355,10 @@ ReturnValue Actions::internalUseItem(std::shared_ptr<Player> player, const Posit
 			if (reward->empty()) {
 				return RETURNVALUE_REWARDCONTAINERISEMPTY;
 			}
-	//	} else if (corpseOwner != 0 && !player->canOpenCorpse(corpseOwner)) {
-		//	return RETURNVALUE_YOUARENOTTHEOWNER;
-	//	}
 		} else if (corpseOwner != 0 && !player->canOpenCorpse(corpseOwner)) {
-			if (!g_configManager().getBoolean(STOLE_LOOT, __FUNCTION__)) {
-				return RETURNVALUE_YOUARENOTTHEOWNER;
-			}
+			return RETURNVALUE_YOUARENOTTHEOWNER;
 		}
+
 		// open/close container
 		int32_t oldContainerId = player->getContainerID(openContainer);
 		if (oldContainerId != -1) {
