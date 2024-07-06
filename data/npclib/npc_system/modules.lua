@@ -219,8 +219,8 @@ if Modules == nil then
 			npcHandler:say("I'm sorry, but you need a premium account in order to travel onboard our ships.", npc, player)
 		elseif parameters.level and player:getLevel() < parameters.level then
 			npcHandler:say("You must reach level " .. parameters.level .. " before I can let you go there.", npc, player)
-		--elseif player:isPzLocked() then
-			--npcHandler:say("First get rid of those blood stains! You are not going to ruin my vehicle!", npc, player)
+		elseif player:isPzLocked() then
+			npcHandler:say("First get rid of those blood stains! You are not going to ruin my vehicle!", npc, player)
 		elseif not player:removeMoneyBank(cost) then
 			npcHandler:say("You don't have enough money.", npc, player)
 		else
@@ -539,8 +539,8 @@ if Modules == nil then
 		if player:isPremium() or not premium then
 			if not player:removeMoneyBank(cost) then
 				npcHandler:say("You do not have enough money!", npc, player)
-			--elseif player:isPzLocked(player) then
-				--npcHandler:say("Get out of there with this blood.", npc, player)
+			elseif player:isPzLocked(player) then
+				npcHandler:say("Get out of there with this blood.", npc, player)
 			else
 				npcHandler:say("It was a pleasure doing business with you.", npc, player)
 				npcHandler:removeInteraction(npc, player)
