@@ -1055,6 +1055,10 @@ void Creature::goToFollowCreature_async(std::function<void()> &&onComplete) {
 
 	pathfinderRunning.store(true);
 	g_dispatcher().asyncEvent([self = getCreature()] {
+		if (!self || self->isRemoved()) {
+			return;
+		}
+
 		self->goToFollowCreature();
 		self->pathfinderRunning.store(false);
 	});
