@@ -16,6 +16,7 @@ enum ConfigKey_t : uint16_t {
 	AIMBOT_HOTKEY_ENABLED,
 
 
+
 	ALLOW_BLOCK_SPAWN,
 
 	ALLOW_CHANGEOUTFIT,
